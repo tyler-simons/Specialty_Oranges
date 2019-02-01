@@ -3,6 +3,17 @@
 # Call libraries
 library(tidyverse)
 library(readxl)
+library(FactoMineR)
+library(reshape2)
+library(ggrepel)
+
+# Helper functions
+set_rn <- function (df){
+  df <- as.data.frame(df)
+  rownames(df) <- df[,1]
+  df[,1] <- NULL
+  return (df)
+}
 
 # Import the Data
 
@@ -105,5 +116,79 @@ psuedo_mixed_model <- function (da){
 
   return (da.sig)
   }
-psuedo_mixed_model(BloodOrangesFull)
 
+# Select the pseudomixed attributes
+pm_model <- psuedo_mixed_model(BloodOrangesFull)
+
+# Create the means table
+means_df <- pm_model %>% group_by(ProductName) %>% summarise_all(mean) %>% select (-CJ, -NR) %>% set_rn
+
+# PCA function to plot the means tables
+function.pca = function (means.table, name, dim1, dim2, products.scale, zoom = 1) {
+  
+  
+  da.pca = PCA(means.table, scale.unit= FALSE, graph = FALSE)
+  
+  # Map the attributes
+  attribute.points = as.data.frame (   da.pca$var$coord[,c( dim1,dim2 )]  )
+  attribute.points[,3:4] = 0
+  colnames (attribute.points) <- c("Dim.1", "Dim.2", "Dim.1.0","Dim.2.0")
+  
+  # Map the products
+  product.points = as.data.frame (   da.pca$ind$coord[,c( dim1,dim2 )]  )
+  product.points[,3:4] = 0
+  product.points <-  product.points * (1/products.scale)
+  
+  colnames (product.points) <- c("Prod.1", "Prod.2", "Prod.1.0","Prod.2.0")
+  
+  product.points2 <- product.points
+  product.points2[,5] <- "Products"
+  
+  attribute.points2 <- attribute.points
+  attribute.points2[,5] <- "Attributes"
+  
+  names ( product.points2) <- names ( attribute.points2)
+  
+  names.matrix <- rbind ( product.points2, attribute.points2)
+  names.matrix$V5 <- as.factor (names.matrix$V5)
+  
+  # % Explained:
+  percent.expl <- da.pca$eig[,'percentage of variance']
+  
+  pca.plot <- ggplot() + 
+    geom_point (aes(x=Prod.1,y=Prod.2), 
+                data=product.points, 
+                alpha = 0.5, 
+                color = I("black")) +
+    
+    geom_text_repel( aes (x=( Dim.1), y=(Dim.2), 
+                          color = factor (V5), 
+                          label = rownames(names.matrix) ), 
+                     size = 4,  
+                     alpha = 1, 
+                     data = names.matrix) + 
+    
+    geom_segment(aes (xend=Dim.1,yend=Dim.2, x = 0, y = 0 ), 
+                 data = attribute.points, 
+                 arrow = arrow(length = unit(0.01, "npc")), 
+                 alpha = 0.6 ) + 
+    coord_cartesian(xlim = c(-2/zoom,2/zoom), ylim=c(-1/zoom,1/zoom)) +
+    theme_minimal () +
+    labs(title = name, 
+         x = sprintf("PC%d (%s%%) ", dim1, round ( percent.expl[dim1],2)), 
+         y= sprintf("PC%d (%s%%) ",dim2, round ( percent.expl[dim2],2)),
+         color = "") + 
+    theme(plot.title = element_text(hjust = 0.5), 
+          panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank() ) + 
+    geom_vline(xintercept = 0, alpha = 0.5) + geom_hline(yintercept  = 0, alpha = 0.5)
+  return (pca.plot)
+}
+
+# All fruit PCA
+da_pca_full <- function.pca(means_df, "Specialty Oranges DA PCA", 1, 2, 5, 0.65)
+ggsave("DA_PCA_all.jpg",da_pca_full, device = "jpg", width = 10, path = "~/Desktop/Manuscripts/Year 3/Blood Oranges/Manuscript/Figures")
+
+# Commerical Samples only that were tasted by consumers
+da_pca_comm <- function.pca(means_df[c(1,4,5,6,7,8,10,13),], "Commercial Specialty Oranges DA PCA", 1, 2, 5, 0.65)
+ggsave("DA_PCA_comm.jpg",da_pca_comm, device = "jpg", width = 10, path = "~/Desktop/Manuscripts/Year 3/Blood Oranges/Manuscript/Figures")
