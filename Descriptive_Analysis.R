@@ -19,7 +19,7 @@ set_rn <- function (df){
 
 # DA Data of commerical samples that the consumers also tasted
 CommercialDAdata <- read_csv("../DA Data/CommercialDAdata.csv")
-
+ncol(CommercialDAdata) -3
 # Full DA data including Riverside fruit
 BloodOrangesFull <- read_excel("../DA Data/BloodOrangesFull.xlsx") 
 
@@ -119,6 +119,20 @@ psuedo_mixed_model <- function (da){
 
 # Select the pseudomixed attributes
 pm_model <- psuedo_mixed_model(BloodOrangesFull)
+
+# Make plots for the distributions of significant variables
+hist_plots <- lapply ( colnames(pm_model)[4:ncol(pm_model)], function (x){hist(pm_model[x] %>% pull, 
+                                                                 xlab = "Rating", 
+                                                                 main = colnames(pm_model[x]))})
+
+# Intake a column and output a ggsave object
+save_hist <- function (x){
+  return ( ggsave ( filename = paste0(colnames(pm_model)[x+3], ".jpg"),
+                      plot = plot(hist_plots[[x]], 
+                      xlab = "Rating", main = colnames(pm_model)[4:ncol(pm_model)][x]), 
+                      path ="../Manuscript/Figures/DA Hists/") ) } 
+
+lapply (1:length(hist_plots), save_hist)
 
 # Create the means table
 means_df <- pm_model %>% group_by(ProductName) %>% summarise_all(mean) %>% select (-CJ, -NR) %>% set_rn
