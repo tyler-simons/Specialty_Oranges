@@ -58,6 +58,8 @@ adults_cata_sums <- adults_clustered %>%
   select (Product, aromatic:fibrous) %>% 
   group_by(Product) %>% summarise_all(sum) 
 
+# Plot a correspondence analysis for the adults
+
 ac <- adults_cata_sums %>% as.data.frame()
 rownames(ac) <- ac[,1]
 ac[,1] <- NULL
@@ -67,6 +69,7 @@ my_plot <- plot(c_a, mass = TRUE, contrib = "absolute", map =
        "rowgreen", arrows = c(FALSE, TRUE))
 my_plot
 
+# Turn into a ggplot
 library(ggrepel)
 gplot <- ggplot() + 
   geom_point(aes(x = my_plot$rows[,1], y = my_plot$rows[,2]), color = "red") + 
@@ -75,6 +78,6 @@ gplot <- ggplot() +
                arrow = arrow(length = unit(0.01, "npc"))) + 
   geom_text_repel(aes(x = my_plot$cols[,1], y = my_plot$cols[,2], label = rownames(my_plot$cols))) + 
   theme_minimal() + xlab("Dimension 1 (64.9%)") + ylab("Dimension 2 (18.3%")
-ggsave("../Manuscript/Figures/Adult_CA.jpg",gplot, width = 8, device = "jpg")
+# ggsave("../Manuscript/Figures/Adult_CA.jpg",gplot, width = 8, device = "jpg")
 
 
