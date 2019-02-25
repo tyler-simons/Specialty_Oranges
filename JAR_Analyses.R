@@ -2,14 +2,18 @@
 kids_clustered <- read_csv("../Data/kids_spec_clustered.csv")
 adults_clustered <- read_csv("../Data/adults_spec_clustered.csv")
 
+copy.clipboard = function (x){
+  clip <- pipe("pbcopy", "w")                       
+  write.table(cbind (rownames(x), x) , file=clip, sep = '\t', row.names = FALSE)                               
+  close(clip)}
+
 
 jar.percents <- function (attribute, clustered.data){
-  
   jar.attribute = clustered.data[,which( names (clustered.data) == attribute)]
-  if (length(unique(jar.attribute)) == 5){
+  if (length(table(jar.attribute)) == 5){
   jar.table <- table (clustered.data$Product, jar.attribute %>% pull(attribute))
   table_sums <- cbind ("Too little" = jar.table[,1] + jar.table[,2], JAR =
-                         jar.table[,3], "Too much" = jar.table[4] + jar.table[,5])
+                         jar.table[,3], "Too much" = jar.table[,4] + jar.table[,5])
   jar.table <- as.data.frame ( t ( round ( table_sums / rowSums (table_sums), 2 ) )  )
   jar.table$attribute <- rep ( attribute, 3)
   return (jar.table) }
@@ -24,14 +28,14 @@ jar.percents <- function (attribute, clustered.data){
   }
 }
 
-
-
+jar.percents(colnames(adults_clustered)[9], adults_clustered)
 # JAR Percentages 
 JAR.list <- c("JAR.sweetness", "JAR.sourness", "JAR.size", "JAR.color", "JAR.juiciness")
 JAR.list <- colnames(adults_clustered)[c(4,8,9,10,11)]
 copy.clipboard ( do.call (rbind, lapply (JAR.list, jar.percents, clustered.data = adults_clustered ) ) )
 jar.percents("JAR.sweetness", kids_clustered)
 chisq.test ( table ( adults_clustered$Product, adults_clustered$`JAR Size`) )
+
 
 
 # JAR attributes by cluster
@@ -78,7 +82,7 @@ sapply ( colnames(kids_clustered)[c(4,8,9,10,11)], jar_penalty_kids, df = kids_c
 
 
 
-
+adults_clustered %>% filter (Product == "Sanguinelli_L") %>% pull(`JAR Sourness`) %>% table()
 
 
 

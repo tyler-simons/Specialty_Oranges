@@ -135,7 +135,9 @@ save_hist <- function (x){
 lapply (1:length(hist_plots), save_hist)
 
 # Create the means table
-means_df <- pm_model %>% group_by(ProductName) %>% summarise_all(mean) %>% select (-CJ, -NR) %>% set_rn
+means_df <- pm_model %>% group_by(ProductName) %>% summarise_all(mean) %>% select (-CJ, -NR) 
+
+cor (means_df[2:ncol(means_df)]) %>% copy.clipboard()
 
 # PCA function to plot the means tables
 function.pca = function (means.table, name, dim1, dim2, products.scale, zoom = 1) {
