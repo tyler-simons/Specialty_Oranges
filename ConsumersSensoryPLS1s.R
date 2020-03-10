@@ -6,7 +6,7 @@ library(FactoMineR)
 library(ggrepel)
 library(ggforce)
 
-da_cons_pls <- read_excel("~/Desktop/Manuscripts/Year 3/Blood Oranges/Data/da_cons_pls.xlsx")
+da_cons_pls <- read_excel("FILEPATH")
 pls_df <- as.data.frame(da_cons_pls) %>% column_to_rownames("Product")
 
 gplot_pls1 <- function (predictors, response) {
@@ -49,13 +49,13 @@ gplot_pls1 <- function (predictors, response) {
   }
 
 gplot_pls1(pls_df[,14:32], pls_df[34]) %>% 
-  ggsave(filename = "Adult_Cluster1_DApls1.jpg", path = "../Manuscript/Figures/ConsDAPLS1/", width = 7)
+  ggsave(filename = "Adult_Cluster1_DApls1.jpg", path = "FILEPATH", width = 7)
 gplot_pls1(pls_df[,14:32], pls_df[35]) %>% 
-  ggsave(filename = "Adult_Cluster2_DApls1.jpg", path = "../Manuscript/Figures/ConsDAPLS1/", width = 7)
+  ggsave(filename = "Adult_Cluster2_DApls1.jpg", path = "FILEPATH", width = 7)
 gplot_pls1(pls_df[,14:32], pls_df[36]) %>% 
-  ggsave(filename = "Child_Cluster1_DApls1.jpg", path = "../Manuscript/Figures/ConsDAPLS1/", width = 7)
+  ggsave(filename = "Child_Cluster1_DApls1.jpg", path = "FILEPATH", width = 7)
 gplot_pls1(pls_df[,14:32], pls_df[37]) %>% 
-  ggsave(filename = "Child_Cluster2_DApls1.jpg", path = "../Manuscript/Figures/ConsDAPLS1/", width = 7)
+  ggsave(filename = "Child_Cluster2_DApls1.jpg", path = "FILEPATH", width = 7)
 gplot_pls1(pls_df[,14:32], pls_df[38]) %>% 
-  ggsave(filename = "Child_Cluster3_DApls1.jpg", path = "../Manuscript/Figures/ConsDAPLS1/", width = 7)
+  ggsave(filename = "Child_Cluster3_DApls1.jpg", path = "FILEPATH", width = 7)
 
