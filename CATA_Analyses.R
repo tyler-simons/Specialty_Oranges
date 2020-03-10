@@ -1,7 +1,7 @@
 ## CATA Analysis (Consumers)
 
-kids_clustered <- read_csv("../Data/kids_spec_clustered.csv")
-adults_clustered <- read_csv("../Data/adults_spec_clustered.csv")
+kids_clustered <- read_csv("FILEPATH")
+adults_clustered <- read_csv("FILEPATH")
 
 
 make_cata_table <- function (df, cata_start, cata_end){
@@ -78,6 +78,6 @@ gplot <- ggplot() +
                arrow = arrow(length = unit(0.01, "npc"))) + 
   geom_text_repel(aes(x = my_plot$cols[,1], y = my_plot$cols[,2], label = rownames(my_plot$cols))) + 
   theme_minimal() + xlab("Dimension 1 (64.9%)") + ylab("Dimension 2 (18.3%")
-# ggsave("../Manuscript/Figures/Adult_CA.jpg",gplot, width = 8, device = "jpg")
+# ggsave("FILEPATH",gplot, width = 8, device = "jpg")
 
 
