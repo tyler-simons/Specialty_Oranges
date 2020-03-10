@@ -1,6 +1,6 @@
 ## JAR Analysis (Consumers)
-kids_clustered <- read_csv("../Data/kids_spec_clustered.csv")
-adults_clustered <- read_csv("../Data/adults_spec_clustered.csv")
+kids_clustered <- read_csv("FILEPATH")
+adults_clustered <- read_csv("FILEPATH")
 
 copy.clipboard = function (x){
   clip <- pipe("pbcopy", "w")                       
