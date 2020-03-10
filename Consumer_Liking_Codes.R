@@ -86,7 +86,7 @@ imputed.function <- function (data){
 remove_0sd_cons  <- function (imputed_dataset){
   # This function removes consumers that have 0 
   
-  # Navel2017Adults <- read_csv("~/Desktop/Manuscripts/Year 2/Year 2 Navels/Tyler Manuscript/Data/Navel2017Adults.csv")
+  # Navel2017Adults <- read_csv("FILEPATH")
   # Should be used with the imputed function
   # Example: Navel2017Adults %>% imputed.function() %>%
   # remove_0sd_cons()
@@ -498,8 +498,8 @@ plot.bar.overall = function (data , x.axis.title = "Title",attribute, letters = 
 
 # Example with Navels
 
-Navel_Key_Names <- read_excel("~/Desktop/Manuscripts/Year 2/Year 2 Navels/Tyler Manuscript/Data/Navel Key Names.xlsx")
-Navel2017Adults <- read_csv("~/Desktop/Manuscripts/Year 2/Year 2 Navels/Tyler Manuscript/Data/Navel2017Adults.csv")
+Navel_Key_Names <- read_excel("FILEPATH")
+Navel2017Adults <- read_csv("FILEPATH")
 Navel2017Adults$Sample <- Navel2017Adults$Sample %>% replace.long.fun(Navel_Key_Names$`Navel Key`, Navel_Key_Names$`Manuscript Names`)
 
 clustered.data <- Navel2017Adults %>% imputed.function() %>%
@@ -513,11 +513,11 @@ clustered.data %>% plot.bar.cluster("Overall Liking", "Overall Liking")
 
 
 # Specialty Oranges
-adults_spec_oranges_named <- read_excel("~/Desktop/Manuscripts/Year 3/Blood Oranges/Data/adults_spec_oranges_named.xlsx")
+adults_spec_oranges_named <- read_excel("FILEPATH")
 
 adults_master <- adults_spec_oranges_named %>% imputed.function() %>%
   remove_0sd_cons() %>% cluster.consumers (num.clusters =  2)
-# write_csv(adults_master, "../Data/adults_spec_clustered.csv")
+# write_csv(adults_master, "FILEPATH")
 
 
 # LSD Means tables
@@ -553,7 +553,7 @@ do.call ("cbind", lapply ( colnames(adults_master)[c(3,6,7)], get_cleaned_lsd_ta
 
 
 # Children
-kids_spec_oranges_named <- read_excel("~/Desktop/Manuscripts/Year 3/Blood Oranges/Data/kids_spec_oranges_named.xlsx")
+kids_spec_oranges_named <- read_excel("FILEPATH")
 
 kids_clustered <- kids_spec_oranges_named %>% imputed.function() %>% remove_0sd_cons() %>% cluster.consumers(3)
 kids_clustered %>% get_cleaned_lsd_table("Texture") %>% copy.clipboard()
@@ -567,5 +567,5 @@ kids_plot <- kids_clustered %>% plot.bar.overall("Overall Liking", "Overall Liki
 
 #ggsave("Child_Cluster_Liking.jpg", kids_plot, device = "jpg", width = 10)
 
-#write_csv(kids_clustered, "../Data/kids_spec_clustered.csv")
+#write_csv(kids_clustered, "FILEPATH")
 
