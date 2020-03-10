@@ -61,7 +61,7 @@ single_factor_lsd <- function (one_factor_tibble){
   return (lsd_tibble)
 }
 
-blood_full_chemical <- read_csv("~/Desktop/Manuscripts/Year 3/Florida Data/Cleaned_Data/blood_full_chemical.csv",
+blood_full_chemical <- read_csv("FILEPATH",
                                 na = "NA")
 
 
@@ -158,7 +158,7 @@ spread_flor <- blood_orange_full %>% select (-groups) %>%
 # full_chem_df[,1] <- NULL
 
 # Import the NMR data to make the full chemical data
-Blood_Orange_NMR <- read_csv("~/Desktop/Manuscripts/Year 3/Blood Oranges/Data/Blood_Orange_NMR.csv")
+Blood_Orange_NMR <- read_csv("FILEPATH")
 
 # LSD on NMR data
 nmr_bo <- Blood_Orange_NMR %>% select (X4, `2-oxoglutarate`:`quinic acid`) %>% rename(Product = X4) %>%
@@ -168,7 +168,7 @@ nmr_means <- nmr_bo %>% select (-groups) %>% spread(compound, concentration) %>%
   as.data.frame() %>% column_to_rownames("Product")
 
 function.pca(nmr_means, name = "Specialty Orange Chemicals", 1, 2, 8, 1.2) %>%
-  ggsave(file = "spec_orange_nmr_12.jpg", path="../Manuscript/Figures/", width = 12)
+  ggsave(file = "spec_orange_nmr_12.jpg", path="FILEPATH", width = 12)
 
 
 # Get the chemical clusters
@@ -184,14 +184,14 @@ chem_clust_df <- chem_clusters %>% select (-cluster) %>% t()
 colnames(chem_clust_df) <- paste0("ChemClust", 1:8)
 
 function.pca(chem_clust_df, name = "Specialty Orange Chemical Clusters", 1, 3, 4, 1) %>%
-  ggsave(file = "nmr_cluster_PCA13.jpg", path="../Manuscript/Figures/", width = 12)
+  ggsave(file = "nmr_cluster_PCA13.jpg", path="FILEPATH", width = 12)
 function.pca(chem_clust_df, name = "Specialty Orange Chemical Clusters", 1, 2, 4, 1)%>%
-  ggsave(file = "nmr_cluster_PCA12.jpg", path="../Manuscript/Figures/", width = 12)
+  ggsave(file = "nmr_cluster_PCA12.jpg", path=".FILEPATH", width = 12)
 
 
 # PLS1s
 # import the DA data
-da_sig <- read_excel("~/Desktop/Manuscripts/Year 3/Blood Oranges/Data/da_sig.xlsx")
+da_sig <- read_excel("FILEPATH")
 
 chem_da <- chem_clust_df %>% as.tibble(rownames="Product") %>% left_join(da_sig, by = "Product") %>%
   as.data.frame() %>% column_to_rownames("Product")
@@ -209,7 +209,7 @@ gplot_pls1(full_nmr_cons[1:36], full_nmr_cons[38])
 cons_chem_pls <- cons_chem_pls %>% as.data.frame() %>% column_to_rownames("Product")
 for (x in 37:ncol(full_nmr_cons)) { 
   plot_name <- paste0(colnames(full_nmr_cons)[x],"pls1.jpg")
-  ggsave ( filename = plot_name, gplot_pls1(full_nmr_cons[,1:36], full_nmr_cons[x]), path = "../ConsChemPLS1/Full_Chem/",
+  ggsave ( filename = plot_name, gplot_pls1(full_nmr_cons[,1:36], full_nmr_cons[x]), path = "FILEPATH",
            width = 7)
 }
 gplot_pls1(cons_chem_pls[,1:12], cons_chem_pls[13])
@@ -224,7 +224,7 @@ full_nmr_DA <- nmr_means %>% rownames_to_column ("Product") %>%
 
 for (x in 37:ncol(full_nmr_DA)) { 
   plot_name <- paste0(colnames(full_nmr_DA)[x],"pls1.jpg")
-  ggsave ( filename = plot_name, gplot_pls1(full_nmr_DA[,1:36], full_nmr_DA[x]), path = "../ChemDAPLS1s/FullChem/",
+  ggsave ( filename = plot_name, gplot_pls1(full_nmr_DA[,1:36], full_nmr_DA[x]), path = "FILEPATH",
            width = 7)
 }
 
