@@ -4,10 +4,10 @@ library(tidyverse)
 library(readxl)
 library(clipr)
 
-setwd("~/Desktop/Manuscripts/Year 3/Specialty Mandarins")
+setwd("FILEPATH")
 
-da_full_mandarins <- read_xlsx(path = "../FullYr3DA.xlsx")
-NMR_mandarins <- read_excel("./NMR_Mandarins_Yr3.xlsx")
+da_full_mandarins <- read_xlsx(path = "FILEPATH")
+NMR_mandarins <- read_excel("FILEPATH")
 
 
 head(da_full_mandarins)
