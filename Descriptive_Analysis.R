@@ -18,10 +18,10 @@ set_rn <- function (df){
 # Import the Data
 
 # DA Data of commerical samples that the consumers also tasted
-CommercialDAdata <- read_csv("../DA Data/CommercialDAdata.csv")
+CommercialDAdata <- read_csv("FILEPATH")
 ncol(CommercialDAdata) -3
 # Full DA data including Riverside fruit
-BloodOrangesFull <- read_excel("../DA Data/BloodOrangesFull.xlsx") 
+BloodOrangesFull <- read_excel("FILEPATH") 
 
 # MANOVA function
 MANOVA_da <- function (da){
@@ -203,8 +203,8 @@ function.pca = function (means.table, name, dim1, dim2, products.scale, zoom = 1
 
 # All fruit PCA
 da_pca_full <- function.pca(means_df, "Specialty Oranges DA PCA", 1, 2, 5, 0.65)
-ggsave("DA_PCA_all.jpg",da_pca_full, device = "jpg", width = 10, path = "~/Desktop/Manuscripts/Year 3/Blood Oranges/Manuscript/Figures")
+ggsave("DA_PCA_all.jpg",da_pca_full, device = "jpg", width = 10, path = "FILEPATH")
 
 # Commerical Samples only that were tasted by consumers
 da_pca_comm <- function.pca(means_df[c(1,4,5,6,7,8,10,13),], "Commercial Specialty Oranges DA PCA", 1, 2, 5, 0.65)
-ggsave("DA_PCA_comm.jpg",da_pca_comm, device = "jpg", width = 10, path = "~/Desktop/Manuscripts/Year 3/Blood Oranges/Manuscript/Figures")
+ggsave("DA_PCA_comm.jpg",da_pca_comm, device = "jpg", width = 10, path = "FILEPATH")
